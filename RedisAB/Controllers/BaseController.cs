@@ -8,9 +8,19 @@ namespace RedisAB.Controllers
 {
     public class BaseController:Controller
     {
-        //protected internal ViewResult ABView()
-        //{
-        ////    ViewBag.ff
-        //}
+        public IABSelector ABSelector { get; set; }
+        protected override ViewResult View(string viewName, string masterName, object model)
+        {
+            if (ThereAreNoValidViews(viewName, masterName))
+            {
+                viewName = ABSelector.Select(viewName, ControllerContext);
+            }
+            return base.View(viewName, masterName, model);
+        }
+        private bool ThereAreNoValidViews(string viewName, string masterName)
+        {
+            var possibleViews = ViewEngineCollection.FindView(ControllerContext, viewName ?? ControllerContext.RouteData.GetRequiredString("action"), masterName ?? String.Empty);
+            return possibleViews.View == null;
+        }
     }
 }
