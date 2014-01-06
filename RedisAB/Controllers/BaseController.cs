@@ -11,6 +11,7 @@ namespace RedisAB.Controllers
         public IABSelector ABSelector { get; set; }
         protected override ViewResult View(string viewName, string masterName, object model)
         {
+            viewName = viewName ?? ControllerContext.RouteData.GetRequiredString("action");
             if (ThereAreNoValidViews(viewName, masterName))
             {
                 viewName = ABSelector.Select(viewName, ControllerContext);
@@ -19,7 +20,7 @@ namespace RedisAB.Controllers
         }
         private bool ThereAreNoValidViews(string viewName, string masterName)
         {
-            var possibleViews = ViewEngineCollection.FindView(ControllerContext, viewName ?? ControllerContext.RouteData.GetRequiredString("action"), masterName ?? String.Empty);
+            var possibleViews = ViewEngineCollection.FindView(ControllerContext, viewName, masterName ?? String.Empty);
             return possibleViews.View == null;
         }
     }

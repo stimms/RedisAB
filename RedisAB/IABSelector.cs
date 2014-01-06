@@ -10,5 +10,4 @@ namespace RedisAB
     {
         string Select(string viewName, ControllerContext context);
     }
-
 }
