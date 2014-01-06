@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using System.Collections.Generic;
 
 namespace RedisAB.Controllers
 {
@@ -11,12 +10,17 @@ namespace RedisAB.Controllers
         public IABSelector ABSelector { get; set; }
         protected override ViewResult View(string viewName, string masterName, object model)
         {
-            viewName = viewName ?? ControllerContext.RouteData.GetRequiredString("action");
-            if (ThereAreNoValidViews(viewName, masterName))
-            {
-                viewName = ABSelector.Select(viewName, ControllerContext);
-            }
+            viewName = InterceptViewForABTesting(viewName, masterName);
             return base.View(viewName, masterName, model);
+        }
+        private string InterceptViewForABTesting(string viewName, string masterName)
+        {
+            var resolvedViewName = viewName ?? ControllerContext.RouteData.GetRequiredString("action");
+            if (ThereAreNoValidViews(resolvedViewName, masterName))
+            {
+                return ABSelector.Select(resolvedViewName, ControllerContext);
+            }
+            return resolvedViewName;
         }
         private bool ThereAreNoValidViews(string viewName, string masterName)
         {
