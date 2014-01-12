@@ -14,6 +14,7 @@ namespace RedisAB
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<DefaultABSelector>().AsImplementedInterfaces();
+            builder.RegisterType<RedisABLogger>().AsImplementedInterfaces();
             builder.RegisterModelBinders(Assembly.GetExecutingAssembly());
             builder.RegisterControllers(Assembly.GetExecutingAssembly()).PropertiesAutowired();
             var container = builder.Build();

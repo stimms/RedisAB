@@ -8,6 +8,7 @@ namespace RedisAB.Controllers
     public class BaseController:Controller
     {
         public IABSelector ABSelector { get; set; }
+        public IABLogger ABLogger { get; set; }
         protected override ViewResult View(string viewName, string masterName, object model)
         {
             viewName = InterceptViewForABTesting(viewName, masterName);
@@ -15,10 +16,13 @@ namespace RedisAB.Controllers
         }
         private string InterceptViewForABTesting(string viewName, string masterName)
         {
-            var resolvedViewName = viewName ?? ControllerContext.RouteData.GetRequiredString("action");
+            string action = ControllerContext.RouteData.GetRequiredString("action");
+            var resolvedViewName = viewName ?? action;
             if (ThereAreNoValidViews(resolvedViewName, masterName))
             {
-                return ABSelector.Select(resolvedViewName, ControllerContext);
+                var selectedView = ABSelector.Select(resolvedViewName, ControllerContext);
+                LogSelectedView(action, selectedView);
+                return selectedView;
             }
             return resolvedViewName;
         }
@@ -26,6 +30,10 @@ namespace RedisAB.Controllers
         {
             var possibleViews = ViewEngineCollection.FindView(ControllerContext, viewName, masterName ?? String.Empty);
             return possibleViews.View == null;
+        }
+        private void LogSelectedView(string actionName, string viewName)
+        {
+            ABLogger.LogInitialVisit(actionName, viewName);
         }
     }
 }
