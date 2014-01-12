@@ -1,11 +1,10 @@
-﻿using Autofac;
-using Autofac.Integration.Mvc;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using Autofac;
 using System.Linq;
-using System.Reflection;
-using System.Web;
 using System.Web.Mvc;
+using System.Reflection;
+using Autofac.Integration.Mvc;
+using System.Collections.Generic;
 
 namespace RedisAB
 {
@@ -14,7 +13,7 @@ namespace RedisAB
         public static void ConfigureContainer()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterType<RandomABSelector>().AsImplementedInterfaces();
+            builder.RegisterType<DefaultABSelector>().AsImplementedInterfaces();
             builder.RegisterModelBinders(Assembly.GetExecutingAssembly());
             builder.RegisterControllers(Assembly.GetExecutingAssembly()).PropertiesAutowired();
             var container = builder.Build();
