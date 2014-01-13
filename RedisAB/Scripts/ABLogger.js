@@ -5,7 +5,12 @@ var RedisAB;
         function ABLogger() {
         }
         ABLogger.prototype.LogSuccess = function (viewName, actionName) {
-            $.post("/ABSuccessController", { viewName: viewName, actionName: actionName });
+            $.ajax({
+                url: "/ABSuccess",
+                data: { viewName: viewName, actionName: actionName },
+                async: false,
+                type: "POST"
+            });
         };
         return ABLogger;
     })();
@@ -13,7 +18,7 @@ var RedisAB;
 })(RedisAB || (RedisAB = {}));
 
 $(function () {
-    $("a").click(function () {
+    $("a[data-view-name][data-action-name]").on("click", function () {
         var viewName = $(this).attr("data-view-name");
         var actionName = $(this).attr("data-action-name");
         new RedisAB.ABLogger().LogSuccess(viewName, actionName);

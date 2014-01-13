@@ -10,9 +10,9 @@ namespace RedisAB.Controllers
         public IABLogger ABLogger { get; set; }
 
         [HttpPost]
-        public void Index(string action, string viewName)
+        public void Index(string actionName, string viewName)
         {
-            ABLogger.LogSuccess(action, viewName);
+            ABLogger.LogSuccess(actionName, viewName);
         }
     }
 }
