@@ -1,8 +1,7 @@
-﻿using BookSleeve;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using BookSleeve;
 using System.Linq;
-using System.Web;
+using System.Collections.Generic;
 
 namespace RedisAB
 {
@@ -19,7 +18,11 @@ namespace RedisAB
 
         public void LogSuccess(string actionName, string viewName)
         {
-            throw new NotImplementedException();
+            using (var conn = new RedisConnection("localhost"))
+            {
+                conn.Open();
+                conn.Strings.Increment(0, String.Format("{0}.{1}.success", actionName, viewName));
+            }
         }
     }
 }

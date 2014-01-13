@@ -22,6 +22,7 @@ namespace RedisAB.Controllers
             {
                 var selectedView = ABSelector.Select(resolvedViewName, ControllerContext);
                 LogSelectedView(action, selectedView);
+                ViewBag.ViewName = selectedView;
                 return selectedView;
             }
             return resolvedViewName;
