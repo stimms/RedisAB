@@ -11,6 +11,7 @@
             <th>Name</th>
             <th>Total</th>
             <th>Successes</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -27,7 +28,7 @@
                     @row.Successes
                 </td>
                 <td>
-                    <div class="progress">
+                    <div class="progress" style="min-width: 100px">
                         <div class="progress-bar" style="width: @(row.Successes * 100 / row.Total)%;"></div>
                     </div>
                 </td>
