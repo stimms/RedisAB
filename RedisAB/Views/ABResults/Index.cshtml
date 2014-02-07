@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<String>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Campaigns";
 }
 
-<h2>Index</h2>
+<h2>Campaigns</h2>
 <ul>
-    @foreach (var key in Model)
+    @foreach (var key in Model.Select(x=>x.Split('.').First()).Distinct())
     {
-        <li>@key</li>
+        <li>@Html.ActionLink(key, "Details", new { keyName = key })</li>
     }
 </ul>

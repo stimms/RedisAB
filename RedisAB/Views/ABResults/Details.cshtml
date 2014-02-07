@@ -1,0 +1,37 @@
+﻿@model IEnumerable<RedisAB.Models.CampaignResult>
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<table class="table table-bordered table-striped ">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Total</th>
+            <th>Successes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model)
+        {
+            <tr>
+                <td>
+                    @row.Name
+                </td>
+                <td>
+                    @row.Total
+                </td>
+                <td>
+                    @row.Successes
+                </td>
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: @(row.Successes * 100 / row.Total)%;"></div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
